@@ -16,6 +16,19 @@
                 width: 100%;
                 height: 50px;
             }
+
+            .list {
+                border: 3px #999 solid;
+            }
+
+            .A {
+                color: #F00;
+            }
+
+            .B {
+                color: #0F0;
+            }
+
         </style>
     </head> 
     
@@ -27,6 +40,13 @@
             </ul>
         </template>
         <template id="eh-index-list-item">
+            <style>
+                :host {
+                    all: initial;
+                    border: 1px #33F solid;
+                    display: flex;
+                }
+            </style>
             <li>
                 <slot name="item-key"></slot> : <slot name="item-value"></slot>
             </li>
@@ -45,13 +65,28 @@
             };
 
             defineCustomElement('eh-index-list');
-            defineCustomElement('eh-index-list-item');
+
+            customElements.define('eh-index-list-item', class extends HTMLElement {
+                constructor(itemKey, itemValue) {
+                    super();
+                    let shadowRoot = this.attachShadow({mode: 'open'});
+                    let t = document.querySelector('#eh-index-list-item');
+                    let instance = t.content.cloneNode(true);
+                    if(itemKey){
+                        instance.querySelector("slot[name=item-key]").innerHTML = itemKey;
+                    }
+                    if(itemValue){
+                        instance.querySelector("slot[name=item-value]").innerHTML = itemValue;
+                    }
+                    shadowRoot.appendChild(instance);
+                }
+            });
 
         </script>
 
 
         <eh-header></eh-header>
-        <eh-index-list>
+        <eh-index-list class="list A">
             <eh-index-list-item>
                 <span slot="item-key">K1</span>
                 <span slot="item-value">V1</span>
@@ -61,6 +96,15 @@
                 <span slot="item-value">V2</span>
             </eh-index-list-item>
         </eh-index-list>
+        <eh-index-list id="listB" class="list B"></eh-index-list>
+
+        <script>
+            let listB = document.querySelector('#listB');
+            let listItem = customElements.get('eh-index-list-item');
+            for (let i = 0; i < 10; i++) {
+                listB.appendChild(new listItem(`K-${i}`, `V-${i}`));
+            }
+        </script>
 
 
         <!--未來應該是放在另一隻JS中的通用元件 >>> -->
