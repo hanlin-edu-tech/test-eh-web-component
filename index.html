@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <style>
+            :not(:defined) {
+                background-color: #AAA;
+            }
+
+            body {
+                display: flex;
+                flex-flow: column;
+            }
+
+            eh-header {
+                transition: background-color 0.5s;
+                display: flex;
+                width: 100%;
+                height: 50px;
+            }
+        </style>
+    </head> 
+    
+    <body>
+        <template id="eh-index-list">
+            <h3>這是清單</h3>
+            <ul>
+                <slot></slot>
+            </ul>
+        </template>
+        <template id="eh-index-list-item">
+            <li>
+                <slot name="item-key"></slot> : <slot name="item-value"></slot>
+            </li>
+        </template>
+        <script>
+            let defineCustomElement = (id) => {
+                customElements.define(id, class extends HTMLElement {
+                    constructor() {
+                        super();
+                        let shadowRoot = this.attachShadow({mode: 'open'});
+                        let t = document.querySelector(`#${id}`);
+                        let instance = t.content.cloneNode(true);
+                        shadowRoot.appendChild(instance);
+                    }
+                });
+            };
+
+            defineCustomElement('eh-index-list');
+            defineCustomElement('eh-index-list-item');
+
+        </script>
+
+
+        <eh-header></eh-header>
+        <eh-index-list>
+            <eh-index-list-item>
+                <span slot="item-key">K1</span>
+                <span slot="item-value">V1</span>
+            </eh-index-list-item>
+            <eh-index-list-item>
+                <span slot="item-key">K2</span>
+                <span slot="item-value">V2</span>
+            </eh-index-list-item>
+        </eh-index-list>
+
+
+        <!--未來應該是放在另一隻JS中的通用元件 >>> -->
+        <template id="eh-header">
+            <style>
+                .logo {
+                    width: 304px;
+                    height: 35px;
+                }
+            </style>
+            <header>
+                <a href="/index.html"><img class="logo" src="https://www.ehanlin.com.tw/images/ehanlin_logo.svg"/></a>
+                <nav>
+                    <a>購物車</a> | <a>課程開通</a> | <a>免費試用</a> | <a>使用幫手</a>
+                </nav>
+            </header>
+        </template>
+        <script>
+            //模擬載入外部JS的時間差
+            setTimeout(() => {
+                customElements.define('eh-header', class extends HTMLElement {
+                    constructor() {
+                        super();
+                        let shadowRoot = this.attachShadow({mode: 'open'});
+                        let t = document.querySelector('#eh-header');
+                        let instance = t.content.cloneNode(true);
+                        shadowRoot.appendChild(instance);
+                    }
+                });
+            }, 2000);
+        </script>
+        <!-- <<< 未來應該是放在另一隻JS中的通用元件-->
+
+    </body>
+</html>
