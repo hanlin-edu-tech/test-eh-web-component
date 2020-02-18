@@ -41,6 +41,13 @@
                     color: #0ff;
                 }
             }
+
+            @media screen and (prefers-color-scheme: dark) {
+                body{
+                    background-color: #666;
+                    color: #ff0;
+                }
+            }
         </style>
     </head> 
     
@@ -63,6 +70,13 @@
 
 <!-- 客制元件注入 >>> -->
         <template id="eh-index-list">
+            <style>
+                @media screen and (prefers-color-scheme: dark) {
+                    :host {
+                        background-color: #000;
+                    }
+                }
+            </style>
             <h3 class="title">這是清單</h3>
             <ul>
                 <slot></slot>
