@@ -25,10 +25,21 @@
 
             .A {
                 color: #F00;
+                width: 50%
             }
 
             .B {
                 color: #0F0;
+            }
+
+            @media (max-width: 600px) {
+                .list {
+                    border: 1px #000 solid;
+                }
+                
+                .C {
+                    color: #0ff;
+                }
             }
         </style>
     </head> 
@@ -50,29 +61,9 @@
         <eh-index-list id="listC" class="list C"></eh-index-list>
 <!-- <<< 頁面主要結構 -->
 
-<!-- 主要程式邏輯 >>> -->
-        <script>
-            //動態產生組合物件的二種方法
-            //使用 class 組物件的方法
-            const listB = document.querySelector('#listB');
-            const listItem = customElements.get('eh-index-list-item');
-            for (let i = 0; i < 5; i++) {
-                listB.appendChild(new listItem(`K-${i}`, `V-${i}`));
-            }
-            
-            //使用組 string 的方法
-            const listC = document.querySelector('#listC');
-            let listCItemsStr = "";
-            for (let i = 0; i < 5; i++) {
-                listCItemsStr += `<eh-index-list-item><span slot="item-key">K~${i}</span><span slot="item-value">V~${i}</span></eh-index-list-item>`;
-            }
-            listC.innerHTML = listCItemsStr;
-        </script>
-<!-- <<< 主要程式邏輯 -->
-
 <!-- 客制元件注入 >>> -->
         <template id="eh-index-list">
-            <h3>這是清單</h3>
+            <h3 class="title">這是清單</h3>
             <ul>
                 <slot></slot>
             </ul>
@@ -80,10 +71,14 @@
         <template id="eh-index-list-item">
             <style>
                 :host {
-                    //擋掉所有外部的CSS
                     all: initial;
                     border: 1px #33F solid;
                     display: flex;
+                }
+                @media (max-width: 600px) {
+                    :host {
+                        border: 3px #F33 solid;
+                    }
                 }
             </style>
             <li>
@@ -121,6 +116,26 @@
             });
         </script>
 <!-- <<< 客制元件注入 -->
+
+<!-- 主要程式邏輯 >>> -->
+<script>
+    //動態產生組合物件的二種方法
+    //使用 class 組物件的方法
+    const listB = document.querySelector('#listB');
+    const listItem = customElements.get('eh-index-list-item');
+    for (let i = 0; i < 5; i++) {
+        listB.appendChild(new listItem(`K-${i}`, `V-${i}`));
+    }
+    
+    //使用組 string 的方法
+    const listC = document.querySelector('#listC');
+    let listCItemsStr = "";
+    for (let i = 0; i < 5; i++) {
+        listCItemsStr += `<eh-index-list-item><span slot="item-key">K~${i}</span><span slot="item-value">V~${i}</span></eh-index-list-item>`;
+    }
+    listC.innerHTML = listCItemsStr;
+</script>
+<!-- <<< 主要程式邏輯 -->
 
         <script src="eh-header.js"></script>
     </body>
