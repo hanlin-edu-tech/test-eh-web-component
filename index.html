@@ -44,6 +44,7 @@
         <template id="eh-index-list-item">
             <style>
                 :host {
+                    //擋掉所有外部的CSS
                     all: initial;
                     border: 1px #33F solid;
                     display: flex;
@@ -99,13 +100,25 @@
             </eh-index-list-item>
         </eh-index-list>
         <eh-index-list id="listB" class="list B"></eh-index-list>
+        <eh-index-list id="listC" class="list C"></eh-index-list>
+        
 
         <script>
+            //動態產生組合物件的二種方法
+            //使用 class 組物件的方法
             let listB = document.querySelector('#listB');
             let listItem = customElements.get('eh-index-list-item');
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 5; i++) {
                 listB.appendChild(new listItem(`K-${i}`, `V-${i}`));
             }
+            
+            //使用組 string 的方法
+            let listC = document.querySelector('#listC');
+            let listCItemsStr = "";
+            for (let i = 0; i < 5; i++) {
+                listCItemsStr += `<eh-index-list-item><span slot="item-key">K~${i}</span><span slot="item-value">V~${i}</span></eh-index-list-item>`;
+            }
+            listC.innerHTML = listCItemsStr;
         </script>
 
 
