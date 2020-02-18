@@ -121,37 +121,7 @@
             listC.innerHTML = listCItemsStr;
         </script>
 
-
-        <!--未來應該是放在另一隻JS中的通用元件 >>> -->
-        <template id="eh-header">
-            <style>
-                .logo {
-                    width: 304px;
-                    height: 35px;
-                }
-            </style>
-            <header>
-                <a href="/index.html"><img class="logo" src="https://www.ehanlin.com.tw/images/ehanlin_logo.svg"/></a>
-                <nav>
-                    <a>購物車</a> | <a>課程開通</a> | <a>免費試用</a> | <a>使用幫手</a>
-                </nav>
-            </header>
-        </template>
-        <script>
-            //模擬載入外部JS的時間差
-            setTimeout(() => {
-                customElements.define('eh-header', class extends HTMLElement {
-                    constructor() {
-                        super();
-                        let shadowRoot = this.attachShadow({mode: 'open'});
-                        let t = document.querySelector('#eh-header');
-                        let instance = t.content.cloneNode(true);
-                        shadowRoot.appendChild(instance);
-                    }
-                });
-            }, 2000);
-        </script>
-        <!-- <<< 未來應該是放在另一隻JS中的通用元件-->
-
+        <script src="eh-header.js"></script>
+        
     </body>
 </html>
