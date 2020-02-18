@@ -56,7 +56,8 @@
         <eh-header></eh-header>
         <eh-index-list class="list A">
             <eh-index-list-item>
-                <span slot="item-key">K1</span>
+                <!--會被 #test 選中-->
+                <span id="test" slot="item-key">K1</span>
                 <span slot="item-value">V1</span>
             </eh-index-list-item>
             <eh-index-list-item>
@@ -77,7 +78,8 @@
                     }
                 }
             </style>
-            <h3 class="title">這是清單</h3>
+            <!--不會被 #test 選中-->
+            <h3 id="test" class="title">這是清單</h3>
             <ul>
                 <slot></slot>
             </ul>
@@ -145,9 +147,17 @@
     const listC = document.querySelector('#listC');
     let listCItemsStr = "";
     for (let i = 0; i < 5; i++) {
-        listCItemsStr += `<eh-index-list-item><span slot="item-key">K~${i}</span><span slot="item-value">V~${i}</span></eh-index-list-item>`;
+        // <span id="test" slot="item-key"> 會被 #test 選中
+        listCItemsStr += `
+            <eh-index-list-item>
+                <span id="test" slot="item-key">K~${i}</span>
+                <span slot="item-value">V~${i}</span>
+            </eh-index-list-item>`;
     }
     listC.innerHTML = listCItemsStr;
+
+    const idTest = document.querySelectorAll('#test');
+    console.log(idTest)
 </script>
 <!-- <<< 主要程式邏輯 -->
 

@@ -1,4 +1,5 @@
 {
+    //<a id="test">購物車</a> 不會被 #test 選中
     const template = `
             <style>
                 .logo {
@@ -9,7 +10,7 @@
             <header>
                 <a href="/index.html"><img class="logo" src="https://www.ehanlin.com.tw/images/ehanlin_logo.svg"/></a>
                 <nav>
-                    <a>購物車</a> | <a>課程開通</a> | <a>免費試用</a> | <a>使用幫手</a>
+                    <a id="test">購物車</a> | <a>課程開通</a> | <a>免費試用</a> | <a>使用幫手</a>
                 </nav>
             </header>
     `;
