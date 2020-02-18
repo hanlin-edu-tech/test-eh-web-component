@@ -116,11 +116,14 @@
             defineCustomElement('eh-index-list');
 
             customElements.define('eh-index-list-item', class extends HTMLElement {
-                constructor(itemKey, itemValue) {
+                constructor(itemKey, itemValue, even) {
                     super();
                     const shadowRoot = this.attachShadow({mode: 'open'});
                     const t = document.querySelector('#eh-index-list-item');
                     const instance = t.content.cloneNode(true);
+                    if(even){
+                        shadowRoot.innerHTML = "<p id='test'>偶數</p>"
+                    }
                     if(itemKey){
                         instance.querySelector("slot[name=item-key]").innerHTML = itemKey;
                     }
@@ -140,7 +143,8 @@
     const listB = document.querySelector('#listB');
     const listItem = customElements.get('eh-index-list-item');
     for (let i = 0; i < 5; i++) {
-        listB.appendChild(new listItem(`K-${i}`, `V-${i}`));
+        let even = (i % 2 == 0);
+        listB.appendChild(new listItem(`K-${i}`, `V-${i}`, even));
     }
     
     //使用組 string 的方法
