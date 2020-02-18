@@ -17,7 +17,7 @@
     customElements.define('eh-header', class extends HTMLElement {
         constructor() {
             super();
-            let shadowRoot = this.attachShadow({mode: 'open'});
+            const shadowRoot = this.attachShadow({mode: 'open'});
             shadowRoot.innerHTML = template;
         }
     });

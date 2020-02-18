@@ -30,11 +30,47 @@
             .B {
                 color: #0F0;
             }
-
         </style>
     </head> 
     
     <body>
+<!-- 頁面主要結構 >>> -->
+        <eh-header></eh-header>
+        <eh-index-list class="list A">
+            <eh-index-list-item>
+                <span slot="item-key">K1</span>
+                <span slot="item-value">V1</span>
+            </eh-index-list-item>
+            <eh-index-list-item>
+                <span slot="item-key">K2</span>
+                <span slot="item-value">V2</span>
+            </eh-index-list-item>
+        </eh-index-list>
+        <eh-index-list id="listB" class="list B"></eh-index-list>
+        <eh-index-list id="listC" class="list C"></eh-index-list>
+<!-- <<< 頁面主要結構 -->
+
+<!-- 主要程式邏輯 >>> -->
+        <script>
+            //動態產生組合物件的二種方法
+            //使用 class 組物件的方法
+            const listB = document.querySelector('#listB');
+            const listItem = customElements.get('eh-index-list-item');
+            for (let i = 0; i < 5; i++) {
+                listB.appendChild(new listItem(`K-${i}`, `V-${i}`));
+            }
+            
+            //使用組 string 的方法
+            const listC = document.querySelector('#listC');
+            let listCItemsStr = "";
+            for (let i = 0; i < 5; i++) {
+                listCItemsStr += `<eh-index-list-item><span slot="item-key">K~${i}</span><span slot="item-value">V~${i}</span></eh-index-list-item>`;
+            }
+            listC.innerHTML = listCItemsStr;
+        </script>
+<!-- <<< 主要程式邏輯 -->
+
+<!-- 客制元件注入 >>> -->
         <template id="eh-index-list">
             <h3>這是清單</h3>
             <ul>
@@ -55,7 +91,7 @@
             </li>
         </template>
         <script>
-            let defineCustomElement = (id) => {
+            const defineCustomElement = (id) => {
                 customElements.define(id, class extends HTMLElement {
                     constructor() {
                         super();
@@ -66,15 +102,14 @@
                     }
                 });
             };
-
             defineCustomElement('eh-index-list');
 
             customElements.define('eh-index-list-item', class extends HTMLElement {
                 constructor(itemKey, itemValue) {
                     super();
-                    let shadowRoot = this.attachShadow({mode: 'open'});
-                    let t = document.querySelector('#eh-index-list-item');
-                    let instance = t.content.cloneNode(true);
+                    const shadowRoot = this.attachShadow({mode: 'open'});
+                    const t = document.querySelector('#eh-index-list-item');
+                    const instance = t.content.cloneNode(true);
                     if(itemKey){
                         instance.querySelector("slot[name=item-key]").innerHTML = itemKey;
                     }
@@ -84,44 +119,9 @@
                     shadowRoot.appendChild(instance);
                 }
             });
-
         </script>
-
-
-        <eh-header></eh-header>
-        <eh-index-list class="list A">
-            <eh-index-list-item>
-                <span slot="item-key">K1</span>
-                <span slot="item-value">V1</span>
-            </eh-index-list-item>
-            <eh-index-list-item>
-                <span slot="item-key">K2</span>
-                <span slot="item-value">V2</span>
-            </eh-index-list-item>
-        </eh-index-list>
-        <eh-index-list id="listB" class="list B"></eh-index-list>
-        <eh-index-list id="listC" class="list C"></eh-index-list>
-        
-
-        <script>
-            //動態產生組合物件的二種方法
-            //使用 class 組物件的方法
-            let listB = document.querySelector('#listB');
-            let listItem = customElements.get('eh-index-list-item');
-            for (let i = 0; i < 5; i++) {
-                listB.appendChild(new listItem(`K-${i}`, `V-${i}`));
-            }
-            
-            //使用組 string 的方法
-            let listC = document.querySelector('#listC');
-            let listCItemsStr = "";
-            for (let i = 0; i < 5; i++) {
-                listCItemsStr += `<eh-index-list-item><span slot="item-key">K~${i}</span><span slot="item-value">V~${i}</span></eh-index-list-item>`;
-            }
-            listC.innerHTML = listCItemsStr;
-        </script>
+<!-- <<< 客制元件注入 -->
 
         <script src="eh-header.js"></script>
-        
     </body>
 </html>
