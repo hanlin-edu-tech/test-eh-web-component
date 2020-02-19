@@ -153,7 +153,7 @@
             //使用組 string 的方法
             const listC = document.querySelector('#listC');
             //偵聽 items 改變的事件來更新 eh-index-list
-            EHDataprovider.view.addEventListener("items-change", () => {
+            EHDataprovider.addEventListener("items-change", () => {
                 let listCItemsStr = "";
                 EHDataprovider.view.items.forEach( item => {
                     // <span id="test" slot="item-key"> 會被 #test 選中
@@ -166,11 +166,11 @@
                 listC.innerHTML = '';
                 listC.innerHTML = listCItemsStr;
             });
-            EHDataprovider.view.page = 1;
+            EHDataprovider.page(1);
 
             const listCPage = document.querySelector('#listCPage');
             listCPage.addEventListener("change", () => {
-                EHDataprovider.view.page = event.target.value;
+                EHDataprovider.page(event.target.value);
             });
 
             const idTest = document.querySelectorAll('#test');
