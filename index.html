@@ -149,12 +149,10 @@
                 let even = (i % 2 == 0);
                 listB.appendChild(new listItem(`K-${i}`, `V-${i}`, even));
             }
-            
+
             //使用組 string 的方法
             const listC = document.querySelector('#listC');
-            const idTest = document.querySelectorAll('#test');
-            console.log(idTest)
-
+            //偵聽 items 改變的事件來更新 eh-index-list
             EHDataprovider.view.addEventListener("items-change", () => {
                 let listCItemsStr = "";
                 EHDataprovider.view.items.forEach( item => {
@@ -174,6 +172,9 @@
             listCPage.addEventListener("change", () => {
                 EHDataprovider.view.page = event.target.value;
             });
+
+            const idTest = document.querySelectorAll('#test');
+            console.log(idTest)
 
         </script>
 <!-- <<< 主要程式邏輯 -->
