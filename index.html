@@ -66,6 +66,7 @@
             </eh-index-list-item>
         </eh-index-list>
         <eh-index-list id="listB" class="list B"></eh-index-list>
+        <input id="listCPage" type="number" min="1" max="10" value="1"/>
         <eh-index-list id="listC" class="list C"></eh-index-list>
 <!-- <<< 頁面主要結構 -->
 
@@ -122,6 +123,7 @@
                     const t = document.querySelector('#eh-index-list-item');
                     const instance = t.content.cloneNode(true);
                     if(even){
+                        //<!--不會被 #test 選中-->
                         shadowRoot.innerHTML = "<p id='test'>偶數</p>"
                     }
                     if(itemKey){
@@ -137,32 +139,43 @@
 <!-- <<< 客制元件注入 -->
 
 <!-- 主要程式邏輯 >>> -->
-<script>
-    //動態產生組合物件的二種方法
-    //使用 class 組物件的方法
-    const listB = document.querySelector('#listB');
-    const listItem = customElements.get('eh-index-list-item');
-    for (let i = 0; i < 5; i++) {
-        let even = (i % 2 == 0);
-        listB.appendChild(new listItem(`K-${i}`, `V-${i}`, even));
-    }
-    
-    //使用組 string 的方法
-    const listC = document.querySelector('#listC');
-    let listCItemsStr = "";
-    for (let i = 0; i < 5; i++) {
-        // <span id="test" slot="item-key"> 會被 #test 選中
-        listCItemsStr += `
-            <eh-index-list-item>
-                <span id="test" slot="item-key">K~${i}</span>
-                <span slot="item-value">V~${i}</span>
-            </eh-index-list-item>`;
-    }
-    listC.innerHTML = listCItemsStr;
+        <script src="dataprovider.js"></script>
+        <script>
+            //動態產生組合物件的二種方法
+            //使用 class 組物件的方法
+            const listB = document.querySelector('#listB');
+            const listItem = customElements.get('eh-index-list-item');
+            for (let i = 0; i < 5; i++) {
+                let even = (i % 2 == 0);
+                listB.appendChild(new listItem(`K-${i}`, `V-${i}`, even));
+            }
+            
+            //使用組 string 的方法
+            const listC = document.querySelector('#listC');
+            const idTest = document.querySelectorAll('#test');
+            console.log(idTest)
 
-    const idTest = document.querySelectorAll('#test');
-    console.log(idTest)
-</script>
+            EHDataprovider.view.addEventListener("items-change", () => {
+                let listCItemsStr = "";
+                EHDataprovider.view.items.forEach( item => {
+                    // <span id="test" slot="item-key"> 會被 #test 選中
+                    listCItemsStr += `
+                        <eh-index-list-item>
+                            <span id="test" slot="item-key">${item.k}</span>
+                            <span slot="item-value">V~${item.v}</span>
+                        </eh-index-list-item>`;                    
+                });
+                listC.innerHTML = '';
+                listC.innerHTML = listCItemsStr;
+            });
+            EHDataprovider.view.page = 1;
+
+            const listCPage = document.querySelector('#listCPage');
+            listCPage.addEventListener("change", () => {
+                EHDataprovider.view.page = event.target.value;
+            });
+
+        </script>
 <!-- <<< 主要程式邏輯 -->
 
         <script src="eh-header.js"></script>
