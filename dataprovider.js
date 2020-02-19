@@ -9,6 +9,7 @@
         }
     });
     const updateItemsData = (page) => {
+        while(viewItemsData.pop());
         for(let i=0 ; i < 5 ; i++){
             viewItemsData.push({
                 k : `p${page}-k${i}`,
