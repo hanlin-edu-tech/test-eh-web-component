@@ -1,0 +1,16 @@
+{
+    "name": "test-eh-web-component",
+    "version": "0.0.0-SNAPSHOT",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:hanlin-edu-tech/test-eh-web-component.git"
+    },
+    "scripts": {
+        "dev": "node node-web-server.js"
+    },
+    "engines": {
+        "node": ">=8 <9"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}

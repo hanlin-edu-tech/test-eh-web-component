@@ -139,8 +139,9 @@
 <!-- <<< 客制元件注入 -->
 
 <!-- 主要程式邏輯 >>> -->
-        <script src="dataprovider.js"></script>
-        <script>
+        <script type="module">
+            import EHDataprovider from '/dataprovider.js';
+
             //動態產生組合物件的二種方法
             //使用 class 組物件的方法
             const listB = document.querySelector('#listB');
