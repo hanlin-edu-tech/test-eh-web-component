@@ -142,41 +142,53 @@
         <script type="module">
             import EHDataprovider from '/dataprovider.js';
 
-            //動態產生組合物件的二種方法
-            //使用 class 組物件的方法
-            const listB = document.querySelector('#listB');
-            const listItem = customElements.get('eh-index-list-item');
-            for (let i = 0; i < 5; i++) {
-                let even = (i % 2 == 0);
-                listB.appendChild(new listItem(`K-${i}`, `V-${i}`, even));
-            }
+            const init = () => {
+                //動態產生組合物件的二種方法
+                //使用 class 組物件的方法
+                const listB = document.querySelector('#listB');
+                const listItem = customElements.get('eh-index-list-item');
+                for (let i = 0; i < 5; i++) {
+                    let even = (i % 2 == 0);
+                    listB.appendChild(new listItem(`K-${i}`, `V-${i}`, even));
+                }
 
-            //使用組 string 的方法
-            const listC = document.querySelector('#listC');
-            //偵聽 items 改變的事件來更新 eh-index-list
-            EHDataprovider.addEventListener("items-change", () => {
-                let listCItemsStr = "";
-                EHDataprovider.view.items.forEach( item => {
-                    // <span id="test" slot="item-key"> 會被 #test 選中
-                    listCItemsStr += `
-                        <eh-index-list-item>
-                            <span id="test" slot="item-key">${item.k}</span>
-                            <span slot="item-value">V~${item.v}</span>
-                        </eh-index-list-item>`;                    
+                //使用組 string 的方法
+                const listC = document.querySelector('#listC');
+                //偵聽 items 改變的事件來更新 eh-index-list
+                EHDataprovider.addEventListener("items-change", () => {
+                    let listCItemsStr = "";
+                    EHDataprovider.view.items.forEach( item => {
+                        // <span id="test" slot="item-key"> 會被 #test 選中
+                        listCItemsStr += `
+                            <eh-index-list-item>
+                                <span id="test" slot="item-key">${item.k}</span>
+                                <span slot="item-value">V~${item.v}</span>
+                            </eh-index-list-item>`;                    
+                    });
+                    listC.innerHTML = '';
+                    listC.innerHTML = listCItemsStr;
                 });
-                listC.innerHTML = '';
-                listC.innerHTML = listCItemsStr;
-            });
-            EHDataprovider.page(1);
+                EHDataprovider.page(1);
 
-            const listCPage = document.querySelector('#listCPage');
-            listCPage.addEventListener("change", () => {
-                EHDataprovider.page(event.target.value);
-            });
+                const listCPage = document.querySelector('#listCPage');
+                listCPage.addEventListener("change", () => {
+                    EHDataprovider.page(event.target.value);
+                });
 
-            const idTest = document.querySelectorAll('#test');
-            console.log(idTest)
+                const idTest = document.querySelectorAll('#test');
+                console.log(idTest)
+                
+                fetch('/pageStatus.json').then(respo => {
+                    console.log(respo);
+                });
+            };
 
+            Promise.all([
+                navigator.serviceWorker.register('/service-worker.js'),
+                navigator.serviceWorker.ready
+            ]).then(init);
+
+            
         </script>
 <!-- <<< 主要程式邏輯 -->
 

@@ -1,14 +1,21 @@
 const viewItemsData = [];
 const updateItemsData = (page) => {
-    viewData.page = page;
-    while(viewItemsData.pop());
-    for(let i=0 ; i < 5 ; i++){
-        viewItemsData.push({
-            k : `p${page}-k${i}`,
-            v : `p${page}-v${i}`
-        });
+    if(viewData.page != page){
+        viewData.page = page;
+        fetch(`/items.json?page=${page}`)
+            .then(respo => respo.json())
+            .then(items => {
+                console.log(items);
+                while(viewItemsData.pop());
+                items.forEach( item => {
+                    viewItemsData.push({
+                        k : item.k,
+                        v : item.v
+                    });
+                    dispatchEvent(new CustomEvent("items-change"));
+                });
+            });
     }
-    dispatchEvent(new CustomEvent("items-change"));
 };
 
 //以下為和主要邏輯無關的工具類    
