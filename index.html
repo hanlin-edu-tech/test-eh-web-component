@@ -49,6 +49,7 @@
                 }
             }
         </style>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     </head> 
     
     <body>
@@ -68,6 +69,8 @@
         <eh-index-list id="listB" class="list B"></eh-index-list>
         <input id="listCPage" type="number" min="1" max="10" value="1"/>
         <eh-index-list id="listC" class="list C"></eh-index-list>
+        <button id="webcamButton">Enable Webcam</button>
+        <eh-webcam></eh-webcam>
 <!-- <<< 頁面主要結構 -->
 
 <!-- 客制元件注入 >>> -->
@@ -135,6 +138,7 @@
                     shadowRoot.appendChild(instance);
                 }
             });
+
         </script>
 <!-- <<< 客制元件注入 -->
 
@@ -176,9 +180,18 @@
             const idTest = document.querySelectorAll('#test');
             console.log(idTest)
 
+
         </script>
-<!-- <<< 主要程式邏輯 -->
+        <!-- <<< 主要程式邏輯 -->
 
         <script src="eh-header.js"></script>
+        <!-- Import TensorFlow.js library -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js" type="text/javascript"></script>
+        <!-- Load the bodypix model to recognize body parts in images -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
+        <script src="script/eh-webcam.js"></script>
+
+<!--        <script src="script/lib.js"></script>-->
+
     </body>
 </html>
