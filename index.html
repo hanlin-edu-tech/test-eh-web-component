@@ -19,28 +19,6 @@
                 height: 50px;
             }
 
-            .list {
-                border: 3px #999 solid;
-            }
-
-            .A {
-                color: #F00;
-                width: 50%
-            }
-
-            .B {
-                color: #0F0;
-            }
-
-            @media (max-width: 600px) {
-                .list {
-                    border: 1px #000 solid;
-                }
-                
-                .C {
-                    color: #0ff;
-                }
-            }
 
             @media screen and (prefers-color-scheme: dark) {
                 body{
@@ -54,53 +32,102 @@
     <body>
 <!-- 頁面主要結構 >>> -->
         <eh-header></eh-header>
-        <eh-index-list class="list A">
-            <eh-index-list-item>
-                <!--會被 #test 選中-->
-                <span id="test" slot="item-key">K1</span>
-                <span slot="item-value">V1</span>
-            </eh-index-list-item>
-            <eh-index-list-item>
-                <span slot="item-key">K2</span>
-                <span slot="item-value">V2</span>
-            </eh-index-list-item>
-        </eh-index-list>
-        <eh-index-list id="listB" class="list B"></eh-index-list>
-        <input id="listCPage" type="number" min="1" max="10" value="1"/>
-        <eh-index-list id="listC" class="list C"></eh-index-list>
+
+		<eh-profile>
+			<img slot="avatar" src="https://ehanlin-web-resource.s3-ap-northeast-1.amazonaws.com/platform/avatar/ps01.png" alt="" />
+			<eh-user-info>
+				<span slot="item-key">帳號</span>
+				<span slot="item-value">bj4@ehanlin.com.tw</span>
+			</eh-user-info>
+			<eh-user-info>
+				<span slot="item-key">名稱</span>
+				<span slot="item-value">bj4</span>
+			</eh-user-info>
+			<eh-user-info>
+				<span slot="item-key">年級</span>
+				<select id="" name="" slot="item-value">
+				        <option value="7" selected>7</option>
+				        <option value="8">8</option>
+				        <option value="9">8</option>
+				</select>
+			</eh-user-info>
+		</eh-profile>
+
+		<eh-profile id="profile2"></eh-profile>
+		<button id="rand">隨機</button>
+		<eh-profile id="profile3"></eh-profile>
+
+
 <!-- <<< 頁面主要結構 -->
 
 <!-- 客制元件注入 >>> -->
-        <template id="eh-index-list">
-            <style>
-                @media screen and (prefers-color-scheme: dark) {
+
+		<template id="eh-profile">
+			<style>
+	            @media screen and (prefers-color-scheme: dark) {
                     :host {
-                        background-color: #000;
+                        background-color: #dedede;
                     }
                 }
-            </style>
-            <!--不會被 #test 選中-->
-            <h3 id="test" class="title">這是清單</h3>
-            <ul>
-                <slot></slot>
-            </ul>
-        </template>
-        <template id="eh-index-list-item">
+
+
+				@media (min-width: 650px) {
+					hr {
+						display:none;
+					}
+					.user-info-list {
+						padding-left:10px;
+					}
+
+					.avatar::slotted(*) {
+						vertical-align:top;
+					}
+				}
+
+				.break {
+				  flex-basis: 100%;
+				  height: 0;
+				}
+			
+				:host {
+					border: 1px solid gray;
+					padding:10px;
+					border-radius:6px;
+				}
+
+				:host > div{
+  					display: flex;
+  					flex-wrap: wrap;
+				}
+
+			</style>
+
+			<div>
+				<slot name="avatar" class="avatar"></slot>
+				<hr class="break">
+				<div class="user-info-list">
+					<slot class="user-info-item"></slot>
+				</div>
+			</div>
+
+		</template>
+
+        <template id="eh-user-info">
             <style>
                 :host {
                     all: initial;
-                    border: 1px #33F solid;
+                    border-bottom: 1px #33F solid;
                     display: flex;
                 }
                 @media (max-width: 600px) {
                     :host {
-                        border: 3px #F33 solid;
+                        border-bottom: 3px #F33 solid;
                     }
                 }
             </style>
-            <li>
+            <div>
                 <slot name="item-key"></slot> : <slot name="item-value"></slot>
-            </li>
+            </div>
         </template>
         <script>
             const defineCustomElement = (id) => {
@@ -114,18 +141,14 @@
                     }
                 });
             };
-            defineCustomElement('eh-index-list');
+            defineCustomElement('eh-profile');
 
-            customElements.define('eh-index-list-item', class extends HTMLElement {
-                constructor(itemKey, itemValue, even) {
+            customElements.define('eh-user-info', class extends HTMLElement {
+                constructor(itemKey, itemValue) {
                     super();
                     const shadowRoot = this.attachShadow({mode: 'open'});
-                    const t = document.querySelector('#eh-index-list-item');
+                    const t = document.querySelector('#eh-user-info');
                     const instance = t.content.cloneNode(true);
-                    if(even){
-                        //<!--不會被 #test 選中-->
-                        shadowRoot.innerHTML = "<p id='test'>偶數</p>"
-                    }
                     if(itemKey){
                         instance.querySelector("slot[name=item-key]").innerHTML = itemKey;
                     }
@@ -143,38 +166,43 @@
         <script>
             //動態產生組合物件的二種方法
             //使用 class 組物件的方法
-            const listB = document.querySelector('#listB');
-            const listItem = customElements.get('eh-index-list-item');
-            for (let i = 0; i < 5; i++) {
-                let even = (i % 2 == 0);
-                listB.appendChild(new listItem(`K-${i}`, `V-${i}`, even));
+            const profile2 = document.querySelector('#profile2');
+            const UserInfoItem = customElements.get('eh-user-info');
+
+			let profileImage2 = new Image();
+			profileImage2.src = 'https://ehanlin-web-resource.s3-ap-northeast-1.amazonaws.com/platform/avatar/ps02.png';
+			profileImage2.slot = 'avatar';
+
+			profile2.appendChild(profileImage2);
+
+            for (let item of [['帳號', 'cat@ehanlin.com.tw'], ['名稱', 'cat'], ['年級', '<input readonly value="8" />']]) {
+                profile2.appendChild(new UserInfoItem(item[0], item[1]));
             }
 
             //使用組 string 的方法
-            const listC = document.querySelector('#listC');
-            //偵聽 items 改變的事件來更新 eh-index-list
+            const profile3 = document.querySelector('#profile3');
             EHDataprovider.addEventListener("items-change", () => {
-                let listCItemsStr = "";
+                let profileHtml = `
+					<img slot="avatar" src="https://ehanlin-web-resource.s3-ap-northeast-1.amazonaws.com/platform/avatar/${EHDataprovider.view.items.img}" alt="">
+				`;
                 EHDataprovider.view.items.forEach( item => {
                     // <span id="test" slot="item-key"> 會被 #test 選中
-                    listCItemsStr += `
-                        <eh-index-list-item>
-                            <span id="test" slot="item-key">${item.k}</span>
-                            <span slot="item-value">V~${item.v}</span>
-                        </eh-index-list-item>`;                    
+                    profileHtml += `
+						<eh-user-info>
+                            <span slot="item-key">${item[0]}</span>
+                            <span slot="item-value">${item[1]}</span>
+						</eh-user-info>`;
                 });
-                listC.innerHTML = '';
-                listC.innerHTML = listCItemsStr;
-            });
-            EHDataprovider.page(1);
-
-            const listCPage = document.querySelector('#listCPage');
-            listCPage.addEventListener("change", () => {
-                EHDataprovider.page(event.target.value);
+                profile3.innerHTML = '';
+                profile3.innerHTML = profileHtml;
             });
 
-            const idTest = document.querySelectorAll('#test');
-            console.log(idTest)
+            EHDataprovider.random();
+            const randBtn = document.querySelector('#rand');
+            randBtn.addEventListener("click", () => {
+                EHDataprovider.random();
+            });
+
 
         </script>
 <!-- <<< 主要程式邏輯 -->

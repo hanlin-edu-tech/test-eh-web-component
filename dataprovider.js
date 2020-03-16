@@ -1,14 +1,30 @@
 {
     const viewItemsData = [];
-    const updateItemsData = (page) => {
-        viewData.page = page;
+
+	const defaultList = [
+		[['帳號', 'dog@ehanlin.com.tw'], ['名稱','dog']],
+		[['帳號', 'Tom@ehanlin.com.tw'], ['名稱','Tom']],
+		[['帳號', 'Mary@ehanlin.com.tw'], ['名稱','Mary']],
+		[['帳號', 'monkey@ehanlin.com.tw'], ['名稱','阿猴']],
+		[['帳號', 'wumi@ehanlin.com.tw'], ['名稱','wumi']]
+	];
+
+	const defaultImages = [
+		'ps05.png',
+		'ps06.png',
+		'ps07.png',
+		'ps08.png',
+		'ps09.png'
+	];
+
+    const random = (page) => {
         while(viewItemsData.pop());
-        for(let i=0 ; i < 5 ; i++){
-            viewItemsData.push({
-                k : `p${page}-k${i}`,
-                v : `p${page}-v${i}`
-            });
-        }
+		let index =  Math.ceil(Math.random() * defaultList.length) - 1;
+		let data = defaultList[index];
+		for (let item of data) {
+        	viewItemsData.push(item);
+		}
+		viewItemsData.img = defaultImages[index];
         dispatchEvent(new Event("items-change"))
     };
 
@@ -41,7 +57,7 @@
     window.EHDataprovider = {
         //約定 view 裡的所有資料都是只讀，不能修改
         view : viewData,
-        page : (page) => updateItemsData(page),
+		random: ()=> random(),
         addEventListener : addEventListener
     }
 
