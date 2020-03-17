@@ -1,0 +1,15 @@
+:not(:defined) {
+    background-color: #F5F5F5;
+}
+
+body {
+    display: flex;
+    flex-flow: column;
+    margin: 0;
+    background-color: #F5F5F5;
+}
+
+section{
+    height: 800px;
+}
+
