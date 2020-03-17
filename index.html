@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta charset="UTF-8"/>
         <style>
-            :not(:defined) {
-                background-color: #AAA;
+            * {
+                box-sizing: border-box;
             }
-
-            body {
-                display: flex;
-                flex-flow: column;
+            html, body {
+                margin: 0px;
+                padding: 0px;
+            }
+            .container {
+            max-width: 1200px;
+            height: 100%;
+            background-color: #f2f2f2;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            }
+            .moregray {
+            background-color: #e1e1e1;
             }
 
             eh-header {
@@ -18,34 +30,11 @@
                 width: 100%;
                 height: 50px;
             }
-
-            .list {
-                border: 3px #999 solid;
-            }
-
-            .A {
-                color: #F00;
-                width: 50%
-            }
-
-            .B {
-                color: #0F0;
-            }
-
-            @media (max-width: 600px) {
-                .list {
-                    border: 1px #000 solid;
-                }
-                
-                .C {
-                    color: #0ff;
-                }
-            }
-
-            @media screen and (prefers-color-scheme: dark) {
-                body{
-                    background-color: #666;
-                    color: #ff0;
+            @media (max-width: 767px) {
+                .container {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
                 }
             }
         </style>
@@ -54,92 +43,56 @@
     <body>
 <!-- 頁面主要結構 >>> -->
         <eh-header></eh-header>
-        <eh-index-list class="list A">
-            <eh-index-list-item>
-                <!--會被 #test 選中-->
-                <span id="test" slot="item-key">K1</span>
-                <span slot="item-value">V1</span>
-            </eh-index-list-item>
-            <eh-index-list-item>
-                <span slot="item-key">K2</span>
-                <span slot="item-value">V2</span>
-            </eh-index-list-item>
-        </eh-index-list>
-        <eh-index-list id="listB" class="list B"></eh-index-list>
-        <input id="listCPage" type="number" min="1" max="10" value="1"/>
-        <eh-index-list id="listC" class="list C"></eh-index-list>
+        <div class="container">
+            <eh-courses-card>
+                <a href="#seemore-1" class="card-tracker" slot="card-tracker"></a>
+                <img src="./image/c-1.png" slot="courses-img"/>
+                <div slot="italic-tag">NEW</div>
+                <div slot="grade-tag">108上</div>
+                <a class="more-see-more" href="#seemore-1" slot="more-see-more">了解更多</a>
+                <a href="#seemore-1" class="details-title" slot="courses-name">國一上 國文e名師</a>
+                <a href="#teacher-1" class="details-teacher" slot="teacher">柳吟團隊</a>
+                <div slot="price">$1880</div>
+            </eh-courses-card>
+        </div>
+        <div class="container moregray">
+            <eh-courses-card>
+                <a href="#seemore-2" class="card-tracker" slot="card-tracker"></a>
+                <img src="./image/c-2.png" slot="courses-img"/>
+                <div slot="italic-tag">SALE</div>
+                <div slot="grade-tag">108上</div>
+                <a class="more-see-more" href="#seemore-2" slot="more-see-more">了解更多</a>
+                <a href="#seemore-2" class="details-title" slot="courses-name">國一上 英文e名師</a>
+                <a href="#teacher-2" class="details-teacher" slot="teacher">林熹英文團隊</a>
+                <div slot="price">$1690</div>
+            </eh-courses-card>
+            <eh-courses-card>
+                <a href="#seemore-3" class="card-tracker" slot="card-tracker"></a>
+                <img src="./image/c-3.png" slot="courses-img"/>
+                <div slot="italic-tag">熱門</div>
+                <div slot="grade-tag">108上</div>
+                <a class="more-see-more" href="#seemore-3" slot="more-see-more">了解更多</a>
+                <a href="#seemore-3" class="details-title" slot="courses-name">國一上 數學e名師</a>
+                <a href="#teacher-3" class="details-teacher" slot="teacher">傅壹數學(藍傑、春暉)</a>
+                <div slot="price">$2990</div>
+            </eh-courses-card>
+            <eh-courses-card>
+                <a href="#seemore-4" class="card-tracker" slot="card-tracker"></a>
+                <img src="./image/c-4.png" slot="courses-img"/>
+                <div slot="italic-tag">NEW</div>
+                <div slot="grade-tag">108上</div>
+                <a class="more-see-more" href="#seemore-4" slot="more-see-more">了解更多</a>
+                <a href="#seemore-4" class="details-title" slot="courses-name">國一上 社會e名師</a>
+                <a href="#teacher-4" class="details-teacher" slot="teacher">李天豪老師</a>
+                <div slot="price">$1880</div>
+            </eh-courses-card>
+        </div>
 <!-- <<< 頁面主要結構 -->
 
-<!-- 客制元件注入 >>> -->
-        <template id="eh-index-list">
-            <style>
-                @media screen and (prefers-color-scheme: dark) {
-                    :host {
-                        background-color: #000;
-                    }
-                }
-            </style>
-            <!--不會被 #test 選中-->
-            <h3 id="test" class="title">這是清單</h3>
-            <ul>
-                <slot></slot>
-            </ul>
-        </template>
-        <template id="eh-index-list-item">
-            <style>
-                :host {
-                    all: initial;
-                    border: 1px #33F solid;
-                    display: flex;
-                }
-                @media (max-width: 600px) {
-                    :host {
-                        border: 3px #F33 solid;
-                    }
-                }
-            </style>
-            <li>
-                <slot name="item-key"></slot> : <slot name="item-value"></slot>
-            </li>
-        </template>
-        <script>
-            const defineCustomElement = (id) => {
-                customElements.define(id, class extends HTMLElement {
-                    constructor() {
-                        super();
-                        let shadowRoot = this.attachShadow({mode: 'open'});
-                        let t = document.querySelector(`#${id}`);
-                        let instance = t.content.cloneNode(true);
-                        shadowRoot.appendChild(instance);
-                    }
-                });
-            };
-            defineCustomElement('eh-index-list');
 
-            customElements.define('eh-index-list-item', class extends HTMLElement {
-                constructor(itemKey, itemValue, even) {
-                    super();
-                    const shadowRoot = this.attachShadow({mode: 'open'});
-                    const t = document.querySelector('#eh-index-list-item');
-                    const instance = t.content.cloneNode(true);
-                    if(even){
-                        //<!--不會被 #test 選中-->
-                        shadowRoot.innerHTML = "<p id='test'>偶數</p>"
-                    }
-                    if(itemKey){
-                        instance.querySelector("slot[name=item-key]").innerHTML = itemKey;
-                    }
-                    if(itemValue){
-                        instance.querySelector("slot[name=item-value]").innerHTML = itemValue;
-                    }
-                    shadowRoot.appendChild(instance);
-                }
-            });
-        </script>
-<!-- <<< 客制元件注入 -->
 
 <!-- 主要程式邏輯 >>> -->
-        <script src="dataprovider.js"></script>
+        <!-- <script src="dataprovider.js"></script>
         <script>
             //動態產生組合物件的二種方法
             //使用 class 組物件的方法
@@ -176,9 +129,10 @@
             const idTest = document.querySelectorAll('#test');
             console.log(idTest)
 
-        </script>
+        </script> -->
 <!-- <<< 主要程式邏輯 -->
 
         <script src="eh-header.js"></script>
+        <script src="eh-courses-card.js"></script>
     </body>
 </html>
