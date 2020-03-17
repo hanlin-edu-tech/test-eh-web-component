@@ -1,7 +1,24 @@
 {
     const viewItemsData = [];
-    const updateItemsData = (page) => {
+    let userList = [];
+
+    const updatePageData = (page) => {
         viewData.page = page;
+        updateItemsData(page)
+        updateUserData()
+    }
+    const updateUserData = () => {
+        fetch('https://reqres.in/api/users?page=2')
+        .then(response => response.json())
+        .then(json => {
+            json.data.forEach(it => {
+                userList.push(it)
+            })
+            dispatchEvent(new Event("users-change"))
+        });
+    }
+
+    const updateItemsData = (page) => {        
         while(viewItemsData.pop());
         for(let i=0 ; i < 5 ; i++){
             viewItemsData.push({
@@ -9,6 +26,7 @@
                 v : `p${page}-v${i}`
             });
         }
+        
         dispatchEvent(new Event("items-change"))
     };
 
@@ -34,14 +52,15 @@
 
     const viewData = {
         page : -1,
-        items : viewItemsData
+        items : viewItemsData,
+        users: userList
     };
 
     //開放給頁面使用的介面
     window.EHDataprovider = {
         //約定 view 裡的所有資料都是只讀，不能修改
         view : viewData,
-        page : (page) => updateItemsData(page),
+        page : (page) => updatePageData(page),
         addEventListener : addEventListener
     }
 
