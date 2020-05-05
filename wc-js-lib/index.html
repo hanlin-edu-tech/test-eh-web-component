@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+    <head>
+        <meta charset="UTF-8"/>
+    </head> 
+
+    <body>
+        <eh-load-underscore></eh-load-underscore>
+
+        <script src="wc/load-underscore.js"></script>
+        <script src="https://underscorejs.org/underscore-min.js"></script>
+        <script>
+            (() => {
+                console.log(window._)
+                console.log(window.EHWC.loadUnderscore)
+                window.EHWC.loadUnderscore.init(window._)
+            })();
+        </script>
+    </body>
+</html>
